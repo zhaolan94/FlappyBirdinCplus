@@ -18,9 +18,9 @@ protected:
     SDL_Rect *objRect=nullptr;
 
 public:
-    Object(){};
+    Object(){objRect = new SDL_Rect;};
     Object(SDL_Renderer *_Render,std::string file);
-    ~Object(){SDL_DestroyTexture(objTexture);};
+    ~Object(){delete objRect;};
     void SetRect(int x,int y,int w,int h){objRect->x = x,objRect->y = y,objRect->w = w,objRect->h = h;};
     SDL_Rect* GetRect(){return objRect;};
     SDL_Texture* GetTexture(){return objTexture;};
@@ -50,6 +50,7 @@ class Pipe:public Object
 {
 public:
     Pipe(SDL_Renderer *_Render,std::string file):Object(_Render,file){};
+    Pipe(SDL_Renderer *_Render,SDL_Texture *_Texture){objRen=_Render;objTexture=_Texture;};
     void Motion();
 };
 class Bird:public Object
@@ -61,6 +62,7 @@ private:
     Bird(SDL_Renderer *_Render,std::string file):Object(_Render,file){};
     void Motion();
     void Draw();
+    void ReSet(){vy=0;};
     void EventHandler(SDL_Event *Event);
 
 };
@@ -68,6 +70,7 @@ class PipeSet
 {
 private:
     Pipe *upPipe,*downPipe;
+    static SDL_Texture *upPipeTexture,*downPipeTexture;
 
 public:
     PipeSet();
@@ -88,11 +91,11 @@ private:
     SDL_Renderer *screenRen;
     list <PipeSet> listPipe;
     list<PipeSet>::iterator iterPipe;
-    void SetPipeStatus();
 public:
     PipeSetManager(SDL_Renderer *_Render,int _width,int _height,int _gap);
     void Motion();
     void Draw();
+    void Reset();
     int CollisionCheck(SDL_Rect *_Bird);//-1 no Coll;0 Coll
 
 };

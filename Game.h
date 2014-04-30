@@ -37,6 +37,7 @@ private:
     void ObjectInit();
     void SetGameStatus(eGameStatus _GameStatus);
     void Motion();
+    void Reset();
     //EventHandle
     void EventHandler();
     void KeyEventHandler(SDL_KeyboardEvent* KeyEvent);

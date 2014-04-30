@@ -1,6 +1,8 @@
 #include "Object.h"
 using namespace std;
 eGameStatus Object::GameStatus;
+SDL_Texture* PipeSet::upPipeTexture = nullptr;
+SDL_Texture*  PipeSet::downPipeTexture = nullptr;
 Object::Object(SDL_Renderer *_Render,std::string file)
 {
     //Bug:Para not check
@@ -104,11 +106,26 @@ void Bird::EventHandler(SDL_Event *Event)
 PipeSet::PipeSet(SDL_Renderer *_Render,int width,int height,int gap)
 {
     SDL_Rect *upRect=nullptr;
+    if(upPipeTexture == nullptr || downPipeTexture == nullptr)
+    {
     upPipe = new Pipe(_Render,".//Res//up.png");
     downPipe = new Pipe(_Render,".//Res//down.png");
+    upPipeTexture = upPipe->GetTexture();
+    downPipeTexture = downPipe->GetTexture();
     upPipe->SetRect(SCREEN_WIDTH,0,width,height*(0.1*(SDL_GetTicks()%10)+1)/4);
     upRect = upPipe->GetRect();
     downPipe->SetRect(SCREEN_WIDTH,upRect->h+gap,width,height-(upRect->h+gap));
+    }
+    else
+    {
+    upPipe = new Pipe(_Render,upPipeTexture);
+    downPipe = new Pipe(_Render,downPipeTexture);
+    upPipe->SetRect(SCREEN_WIDTH,0,width,height*(0.1*(SDL_GetTicks()%10)+1)/4);
+    upRect = upPipe->GetRect();
+    downPipe->SetRect(SCREEN_WIDTH,upRect->h+gap,width,height-(upRect->h+gap));
+    }
+
+
 }
 int PipeSet::CollisionCheck(SDL_Rect *_Bird)
 {
@@ -198,6 +215,13 @@ int PipeSetManager::CollisionCheck(SDL_Rect *_Bird)
         }
     }
     return -1;
+}
+void PipeSetManager::Reset()
+{
+    listPipe.clear();
+    tmpPipe = new PipeSet(screenRen,width,height,gap);
+    listPipe.push_back(*tmpPipe);
+
 }
 /*Bug :What the hell that error comes from surface loading by SDL_IMAGE
 ImageScore::ImageScore(SDL_Renderer *_Renderer)

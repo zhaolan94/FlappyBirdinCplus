@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1398855389 source:e:\source\flappybirdincplus\game.cpp
+1398857740 source:e:\source\flappybirdincplus\game.cpp
 	"Game.h"
 
-1398781795 e:\source\flappybirdincplus\game.h
+1398860961 e:\source\flappybirdincplus\game.h
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
@@ -341,7 +341,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1398855099 e:\source\flappybirdincplus\object.h
+1398860961 e:\source\flappybirdincplus\object.h
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
@@ -349,7 +349,7 @@
 	<list>
 	"type.h"
 
-1398855389 source:e:\source\flappybirdincplus\object.cpp
+1398860961 source:e:\source\flappybirdincplus\object.cpp
 	"Object.h"
 
 1398854599 e:\source\flappybirdincplus\type.h

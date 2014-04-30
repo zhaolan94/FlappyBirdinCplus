@@ -108,6 +108,7 @@ void Game::KeyEventHandler(SDL_KeyboardEvent* KeyEvent)
     case SDL_SCANCODE_RETURN:
         if(GameStatus == Over)
         {
+            Reset();
             SetGameStatus(preStart);
         }
         break;
@@ -185,6 +186,11 @@ void Game::ObjectInit()
     objBird = new Bird(screenRen,".//Res//bird.png");
     objBird->SetRect(SCREEN_WIDTH/3,SCREEN_HEIGHT/3,SCREEN_WIDTH/12,25);
 
+}
+void Game::Reset()
+{
+    mgnPipeSet->Reset();
+    objBird->ReSet();
 }
 void Game::Collision()
 {
