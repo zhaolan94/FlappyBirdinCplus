@@ -1,6 +1,6 @@
 #include "Object.h"
 using namespace std;
-
+eGameStatus Object::GameStatus;
 Object::Object(SDL_Renderer *_Render,std::string file)
 {
     //Bug:Para not check
@@ -161,7 +161,7 @@ void PipeSetManager::Draw()
 }
 void PipeSetManager::Motion()
 {
-    SetPipeStatus();
+
     if(!listPipe.empty())
     {
         for(iterPipe=listPipe.begin(); iterPipe!=listPipe.end(); iterPipe++)
@@ -183,31 +183,7 @@ void PipeSetManager::Motion()
         }
     }
 }
-void PipeSetManager::SetGameStatus(eGameStatus _GameStatus)
-{
-    GameStatus = _GameStatus;
-    if(GameStatus == preStart)
-    {
-        iterPipe=listPipe.begin();
-        if(iterPipe->GetX()!=SCREEN_WIDTH)
-        {
-            listPipe.clear();
-            tmpPipe = new PipeSet(screenRen,width,height,gap);
-            listPipe.push_back(*tmpPipe);
-        }
-    }
-}
-void PipeSetManager::SetPipeStatus()
-{
-    if(!listPipe.empty())
-    {
 
-        for(iterPipe=listPipe.begin(); iterPipe!=listPipe.end(); iterPipe++)
-        {
-            iterPipe->SetGameStatus(GameStatus);
-        }
-    }
-}
 int PipeSetManager::CollisionCheck(SDL_Rect *_Bird)
 {
     if(!listPipe.empty())

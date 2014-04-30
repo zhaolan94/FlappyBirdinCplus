@@ -54,9 +54,7 @@ void Game::SetGameStatus(eGameStatus _GameStatus)
 {
     GameStatus = _GameStatus;
     objBackground->SetGameStatus(_GameStatus);
-    objGround->SetGameStatus(_GameStatus);
-    mgnPipeSet->SetGameStatus(_GameStatus);
-    objBird->SetGameStatus(_GameStatus);
+
 }
 void Game::EventHandler()
 {
