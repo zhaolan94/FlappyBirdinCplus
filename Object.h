@@ -11,7 +11,7 @@ using namespace std;
 class Object
 {
 protected:
-    eGameStatus GameStatus;
+    static eGameStatus GameStatus;
     SDL_Renderer *objRen = nullptr;
     SDL_Texture *objTexture = nullptr;
     SDL_Texture* LoadImage(std::string file);
@@ -77,7 +77,7 @@ public:
     int GetX(){return (upPipe->GetRect())->x;};
     void Motion(){upPipe->Motion();downPipe->Motion();}
     void Draw(){upPipe->Draw();downPipe->Draw();};
-    void SetGameStatus(eGameStatus _GameStatus){upPipe->SetGameStatus(_GameStatus);downPipe->SetGameStatus(_GameStatus);};
+
 };
 class PipeSetManager
 {
@@ -94,7 +94,7 @@ public:
     void Motion();
     void Draw();
     int CollisionCheck(SDL_Rect *_Bird);//-1 no Coll;0 Coll
-    void SetGameStatus(eGameStatus _GameStatus);
+
 };
 class ImageScore
 {
