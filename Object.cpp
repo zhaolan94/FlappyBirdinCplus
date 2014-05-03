@@ -32,7 +32,6 @@ void Object::EventHandler(SDL_Event *Event)
 
 void Ground::Motion()
 {
-    // cout<<"Motion"<<GameStatus<<endl;
     if(GameStatus == Running ||GameStatus == preStart )
     {
         if (objRect->x >(-objRect->w/2) )
@@ -81,7 +80,7 @@ void Bird::Motion()
 }
 void Bird::Draw()
 {
-    if(GameStatus != Quit)   //(GameStatus == Running ||GameStatus == Pause ||GameStatus == Over)
+    if(GameStatus != Quit)
     {
         SDL_RenderCopy(objRen,objTexture,NULL,objRect);
     }
