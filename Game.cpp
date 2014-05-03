@@ -1,6 +1,6 @@
 #include "Game.h"
 using namespace std;
-int Score;
+int iScore = 0;
 Game::Game()
 {
 
@@ -33,7 +33,6 @@ Game::Game()
         cout<<"Render could not be get! SDL_Error: "<< SDL_GetError()<<endl;
 
     }
-   // SDL_RenderSetScale(screenRen,SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
 
 }
 void Game::run()
@@ -79,6 +78,14 @@ void Game::EventHandler()
 
     }
 }
+void Game::MouseEventHandler()
+{
+    if (GameStatus == preStart ||GameStatus ==Pause)
+    {
+        SetGameStatus(Running);
+    }
+
+}
 void Game::KeyEventHandler(SDL_KeyboardEvent* KeyEvent)
 {
     switch (KeyEvent->keysym.scancode)
@@ -92,26 +99,23 @@ void Game::KeyEventHandler(SDL_KeyboardEvent* KeyEvent)
         {
             SetGameStatus(preStart);
         }
-        else if(GameStatus == preStart)
+        else if(GameStatus == preStart || GameStatus == Over)
         {
             SetGameStatus(Quit);
         }
 
         break;
     case SDL_SCANCODE_SPACE:
-        if (GameStatus == preStart ||GameStatus ==Pause)
+        if(GameStatus == Over)
         {
-            SetGameStatus(Running);
+            Reset();
+            SetGameStatus(preStart);
         }
 
         break;
-    case SDL_SCANCODE_RETURN:
-        if(GameStatus == Over)
-        {
-            SetGameStatus(preStart);
-        }
+
+    default:
         break;
-    default:break;
 
 
 
@@ -142,19 +146,23 @@ void Game::ObjectDrawer()
 
     mgnPipeSet->Draw();
     objBird->Draw();
+    objScore->Draw(iScore);
     switch(GameStatus)
     {
 
     case preStart:
         objTextReady->Draw();
+        objTextTips->Draw();
         break;
     case Running:
 
         break;
     case Pause:
+        objTextTips->Draw();
         break;
     case Over:
         objTextOver->Draw();
+        objTextTips->Draw();
         break;
     }
 
@@ -176,15 +184,25 @@ void Game::ObjectInit()
 {
     objBackground = new BackGround(screenRen,".//Res//bg.png");
     objTextReady = new Object(screenRen,".//Res//ready.png");
-    objTextReady->SetRect(SCREEN_WIDTH*0.35,SCREEN_HEIGHT/4,SCREEN_WIDTH/3,SCREEN_WIDTH/10);
+    objTextReady->SetRect(SCREEN_WIDTH*0.35,SCREEN_HEIGHT/5,SCREEN_WIDTH/3,SCREEN_WIDTH/10);
     objTextOver = new Object(screenRen,".//Res//over.png");
-    objTextOver->SetRect(SCREEN_WIDTH*0.35,SCREEN_HEIGHT/4,SCREEN_WIDTH/3,SCREEN_WIDTH/10);
+    objTextOver->SetRect(SCREEN_WIDTH*0.35,SCREEN_HEIGHT/5,SCREEN_WIDTH/3,SCREEN_WIDTH/10);
+    objTextTips = new Object(screenRen,".//Res//tips.png");
+    objTextTips->SetRect(10,SCREEN_HEIGHT *0.4,SCREEN_WIDTH-10,SCREEN_HEIGHT /4);
     objGround = new Ground(screenRen,".//Res//ground.png");
     objGround->SetRect(0,SCREEN_HEIGHT- SCREEN_HEIGHT /4,2* SCREEN_WIDTH,SCREEN_HEIGHT /4);
     mgnPipeSet = new PipeSetManager(screenRen,SCREEN_WIDTH/9,SCREEN_HEIGHT- SCREEN_HEIGHT /4,100);
     objBird = new Bird(screenRen,".//Res//bird.png");
     objBird->SetRect(SCREEN_WIDTH/3,SCREEN_HEIGHT/3,SCREEN_WIDTH/12,25);
 
+    objScore = new Score(screenRen,".//Res//number.png");
+
+}
+void Game::Reset()
+{
+    mgnPipeSet->Reset();
+    objBird->ReSet();
+    iScore = 0;
 }
 void Game::Collision()
 {
@@ -195,7 +213,7 @@ void Game::Collision()
             SetGameStatus(Over);
 
         }
-        Score++;
+
     }
 
 }

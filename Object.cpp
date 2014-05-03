@@ -1,6 +1,9 @@
 #include "Object.h"
+#include <math.h>
 using namespace std;
 eGameStatus Object::GameStatus;
+SDL_Texture* PipeSet::upPipeTexture = nullptr;
+SDL_Texture*  PipeSet::downPipeTexture = nullptr;
 Object::Object(SDL_Renderer *_Render,std::string file)
 {
     //Bug:Para not check
@@ -29,7 +32,6 @@ void Object::EventHandler(SDL_Event *Event)
 
 void Ground::Motion()
 {
-    cout<<"Motion"<<GameStatus<<endl;
     if(GameStatus == Running ||GameStatus == preStart )
     {
         if (objRect->x >(-objRect->w/2) )
@@ -78,7 +80,7 @@ void Bird::Motion()
 }
 void Bird::Draw()
 {
-    if(GameStatus == Running ||GameStatus == Pause ||GameStatus == Over)
+    if(GameStatus != Quit)
     {
         SDL_RenderCopy(objRen,objTexture,NULL,objRect);
     }
@@ -104,17 +106,33 @@ void Bird::EventHandler(SDL_Event *Event)
 PipeSet::PipeSet(SDL_Renderer *_Render,int width,int height,int gap)
 {
     SDL_Rect *upRect=nullptr;
-    upPipe = new Pipe(_Render,".//Res//up.png");
-    downPipe = new Pipe(_Render,".//Res//down.png");
-    upPipe->SetRect(SCREEN_WIDTH,0,width,height*(0.1*(SDL_GetTicks()%10)+1)/4);
-    upRect = upPipe->GetRect();
-    downPipe->SetRect(SCREEN_WIDTH,upRect->h+gap,width,height-(upRect->h+gap));
+    if(upPipeTexture == nullptr || downPipeTexture == nullptr)
+    {
+        upPipe = new Pipe(_Render,".//Res//up.png");
+        downPipe = new Pipe(_Render,".//Res//down.png");
+        upPipeTexture = upPipe->GetTexture();
+        downPipeTexture = downPipe->GetTexture();
+        upPipe->SetRect(SCREEN_WIDTH,0,width,height*(0.1*(SDL_GetTicks()%10)+1)/4);
+        upRect = upPipe->GetRect();
+        downPipe->SetRect(SCREEN_WIDTH,upRect->h+gap,width,height-(upRect->h+gap));
+    }
+    else
+    {
+        upPipe = new Pipe(_Render,upPipeTexture);
+        downPipe = new Pipe(_Render,downPipeTexture);
+        upPipe->SetRect(SCREEN_WIDTH,0,width,height*(0.1*(SDL_GetTicks()%10)+1)/4);
+        upRect = upPipe->GetRect();
+        downPipe->SetRect(SCREEN_WIDTH,upRect->h+gap,width,height-(upRect->h+gap));
+    }
+
+
 }
 int PipeSet::CollisionCheck(SDL_Rect *_Bird)
 {
     SDL_Rect *upRect,*downRect;
     upRect =upPipe->GetRect();
     downRect =downPipe->GetRect();
+    if(upRect->x == _Bird->x )iScore++;//SCore up.
     if(_Bird->y >= upRect->y && (_Bird->y <= upRect->y+upRect->h) || _Bird->y+_Bird->h >= upRect->y && (_Bird->y+_Bird->h <= upRect->y+upRect->h))
     {
         if(_Bird->x >= upRect->x && _Bird->x <= (upRect->x+upRect->w))
@@ -198,6 +216,64 @@ int PipeSetManager::CollisionCheck(SDL_Rect *_Bird)
         }
     }
     return -1;
+}
+void PipeSetManager::Reset()
+{
+    listPipe.clear();
+    tmpPipe = new PipeSet(screenRen,width,height,gap);
+    listPipe.push_back(*tmpPipe);
+
+}
+Score::Score(SDL_Renderer *_Render,std::string file):Object(_Render,file)
+{
+
+    objRen = _Render;
+    int i = 0;
+
+    for (; i<10; i++)
+    {
+        numDstRect[i] = new SDL_Rect;
+        numDstRect[i]->x = i*67.5+1.5;
+        numDstRect[i]->y = 0;
+        numDstRect[i]->w = 56.5;
+        numDstRect[i]->h = 108;
+    }
+}
+void Score::Draw(const int _Score)
+{
+    if(GameStatus == preStart)return;
+    int numbit = 0;
+
+    objRect->h = SCREEN_WIDTH/8;
+    objRect->x = SCREEN_WIDTH/3;
+    objRect->y = 10;
+    objRect->w = SCREEN_WIDTH/10;
+
+    if(_Score<10)
+    {
+        SDL_RenderCopy(objRen,objTexture,numDstRect[_Score],objRect);
+        return;
+    }
+    else
+    {
+        int tmpnum = _Score;
+
+        while(!(tmpnum==0) )
+        {
+            numbit++;
+            tmpnum /= 10;
+        }
+
+        tmpnum = _Score;
+        objRect->x = SCREEN_WIDTH/3+( (objRect->w)*numbit);
+        for(int i = 1; i<=numbit; i++)
+        {
+            int bit;
+            bit = (tmpnum % (int)pow(10,i))/(int) pow(10,i-1);
+            SDL_RenderCopy(objRen,objTexture,numDstRect[bit],objRect);
+            objRect->x = (objRect->x) - (objRect->w);
+        }
+    }
 }
 /*Bug :What the hell that error comes from surface loading by SDL_IMAGE
 ImageScore::ImageScore(SDL_Renderer *_Renderer)

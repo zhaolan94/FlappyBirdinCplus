@@ -24,11 +24,12 @@ private:
     BackGround *objBackground = nullptr;
     Object *objTextReady = nullptr;
     Object *objTextOver = nullptr;
+    Object *objTextTips = nullptr;
     Ground *objGround = nullptr;
-    ImageScore *imgScore = nullptr;
     PipeSetManager *mgnPipeSet = nullptr;
     Bird *objBird = nullptr;
-    int Score = 0;
+    Score *objScore = nullptr;
+
 
 
     //End
@@ -37,10 +38,11 @@ private:
     void ObjectInit();
     void SetGameStatus(eGameStatus _GameStatus);
     void Motion();
+    void Reset();
     //EventHandle
     void EventHandler();
     void KeyEventHandler(SDL_KeyboardEvent* KeyEvent);
-    void MouseEventHandler(){;};
+    void MouseEventHandler();
     //End EventHandle
     //Drawer
     void Drawer();
