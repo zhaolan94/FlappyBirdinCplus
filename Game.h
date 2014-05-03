@@ -24,6 +24,7 @@ private:
     BackGround *objBackground = nullptr;
     Object *objTextReady = nullptr;
     Object *objTextOver = nullptr;
+    Object *objTextTips = nullptr;
     Ground *objGround = nullptr;
     PipeSetManager *mgnPipeSet = nullptr;
     Bird *objBird = nullptr;
@@ -41,10 +42,7 @@ private:
     //EventHandle
     void EventHandler();
     void KeyEventHandler(SDL_KeyboardEvent* KeyEvent);
-    void MouseEventHandler()
-    {
-        ;
-    };
+    void MouseEventHandler();
     //End EventHandle
     //Drawer
     void Drawer();

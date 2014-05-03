@@ -95,6 +95,7 @@ public:
     void Draw();
     void ReSet()
     {
+        objRect->y = SCREEN_HEIGHT/3;
         vy=0;
     };
     void EventHandler(SDL_Event *Event);

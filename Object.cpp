@@ -81,7 +81,7 @@ void Bird::Motion()
 }
 void Bird::Draw()
 {
-    if(GameStatus == Running ||GameStatus == Pause ||GameStatus == Over)
+    if(GameStatus != Quit)   //(GameStatus == Running ||GameStatus == Pause ||GameStatus == Over)
     {
         SDL_RenderCopy(objRen,objTexture,NULL,objRect);
     }

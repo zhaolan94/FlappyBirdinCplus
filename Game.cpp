@@ -78,6 +78,14 @@ void Game::EventHandler()
 
     }
 }
+void Game::MouseEventHandler()
+{
+    if (GameStatus == preStart ||GameStatus ==Pause)
+    {
+        SetGameStatus(Running);
+    }
+
+}
 void Game::KeyEventHandler(SDL_KeyboardEvent* KeyEvent)
 {
     switch (KeyEvent->keysym.scancode)
@@ -98,10 +106,6 @@ void Game::KeyEventHandler(SDL_KeyboardEvent* KeyEvent)
 
         break;
     case SDL_SCANCODE_SPACE:
-        if (GameStatus == preStart ||GameStatus ==Pause)
-        {
-            SetGameStatus(Running);
-        }
         if(GameStatus == Over)
         {
             Reset();
@@ -148,14 +152,17 @@ void Game::ObjectDrawer()
 
     case preStart:
         objTextReady->Draw();
+        objTextTips->Draw();
         break;
     case Running:
 
         break;
     case Pause:
+        objTextTips->Draw();
         break;
     case Over:
         objTextOver->Draw();
+        objTextTips->Draw();
         break;
     }
 
@@ -177,9 +184,11 @@ void Game::ObjectInit()
 {
     objBackground = new BackGround(screenRen,".//Res//bg.png");
     objTextReady = new Object(screenRen,".//Res//ready.png");
-    objTextReady->SetRect(SCREEN_WIDTH*0.35,SCREEN_HEIGHT/4,SCREEN_WIDTH/3,SCREEN_WIDTH/10);
+    objTextReady->SetRect(SCREEN_WIDTH*0.35,SCREEN_HEIGHT/5,SCREEN_WIDTH/3,SCREEN_WIDTH/10);
     objTextOver = new Object(screenRen,".//Res//over.png");
-    objTextOver->SetRect(SCREEN_WIDTH*0.35,SCREEN_HEIGHT/4,SCREEN_WIDTH/3,SCREEN_WIDTH/10);
+    objTextOver->SetRect(SCREEN_WIDTH*0.35,SCREEN_HEIGHT/5,SCREEN_WIDTH/3,SCREEN_WIDTH/10);
+    objTextTips = new Object(screenRen,".//Res//tips.png");
+    objTextTips->SetRect(10,SCREEN_HEIGHT *0.4,SCREEN_WIDTH-10,SCREEN_HEIGHT /4);
     objGround = new Ground(screenRen,".//Res//ground.png");
     objGround->SetRect(0,SCREEN_HEIGHT- SCREEN_HEIGHT /4,2* SCREEN_WIDTH,SCREEN_HEIGHT /4);
     mgnPipeSet = new PipeSetManager(screenRen,SCREEN_WIDTH/9,SCREEN_HEIGHT- SCREEN_HEIGHT /4,100);
