@@ -1,6 +1,6 @@
 #include "Game.h"
 using namespace std;
-int Score;
+int iScore = 0;
 Game::Game()
 {
 
@@ -33,7 +33,6 @@ Game::Game()
         cout<<"Render could not be get! SDL_Error: "<< SDL_GetError()<<endl;
 
     }
-   // SDL_RenderSetScale(screenRen,SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
 
 }
 void Game::run()
@@ -92,7 +91,7 @@ void Game::KeyEventHandler(SDL_KeyboardEvent* KeyEvent)
         {
             SetGameStatus(preStart);
         }
-        else if(GameStatus == preStart)
+        else if(GameStatus == preStart || GameStatus == Over)
         {
             SetGameStatus(Quit);
         }
@@ -103,16 +102,16 @@ void Game::KeyEventHandler(SDL_KeyboardEvent* KeyEvent)
         {
             SetGameStatus(Running);
         }
-
-        break;
-    case SDL_SCANCODE_RETURN:
         if(GameStatus == Over)
         {
             Reset();
             SetGameStatus(preStart);
         }
+
         break;
-    default:break;
+
+    default:
+        break;
 
 
 
@@ -143,6 +142,7 @@ void Game::ObjectDrawer()
 
     mgnPipeSet->Draw();
     objBird->Draw();
+    objScore->Draw(iScore);
     switch(GameStatus)
     {
 
@@ -186,11 +186,14 @@ void Game::ObjectInit()
     objBird = new Bird(screenRen,".//Res//bird.png");
     objBird->SetRect(SCREEN_WIDTH/3,SCREEN_HEIGHT/3,SCREEN_WIDTH/12,25);
 
+    objScore = new Score(screenRen,".//Res//number.png");
+
 }
 void Game::Reset()
 {
     mgnPipeSet->Reset();
     objBird->ReSet();
+    iScore = 0;
 }
 void Game::Collision()
 {
@@ -201,7 +204,7 @@ void Game::Collision()
             SetGameStatus(Over);
 
         }
-        Score++;
+
     }
 
 }

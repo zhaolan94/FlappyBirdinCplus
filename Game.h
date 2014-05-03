@@ -25,10 +25,10 @@ private:
     Object *objTextReady = nullptr;
     Object *objTextOver = nullptr;
     Ground *objGround = nullptr;
-    ImageScore *imgScore = nullptr;
     PipeSetManager *mgnPipeSet = nullptr;
     Bird *objBird = nullptr;
-    int Score = 0;
+    Score *objScore = nullptr;
+
 
 
     //End
@@ -41,7 +41,10 @@ private:
     //EventHandle
     void EventHandler();
     void KeyEventHandler(SDL_KeyboardEvent* KeyEvent);
-    void MouseEventHandler(){;};
+    void MouseEventHandler()
+    {
+        ;
+    };
     //End EventHandle
     //Drawer
     void Drawer();
