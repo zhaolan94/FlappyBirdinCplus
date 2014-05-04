@@ -31,9 +31,9 @@ public:
     {
         objRect->x = x,objRect->y = y,objRect->w = w,objRect->h = h;
     };
-    SDL_Rect* GetRect()
+    const SDL_Rect& GetRect()
     {
-        return objRect;
+        return *objRect;
     };
     SDL_Texture* GetTexture()
     {
@@ -115,10 +115,11 @@ public:
         delete downPipe;
     };
     PipeSet(SDL_Renderer *_Render,int width,int height,int gap);
-    int CollisionCheck(SDL_Rect *_Bird);//-1 no Coll;0 Coll
+    int CollisionCheck(const SDL_Rect& __Bird);//-1 no Coll;0 Coll
     int GetX()
     {
-        return (upPipe->GetRect())->x;
+
+        return ((upPipe->GetRect()).x);
     };
     void Motion()
     {
@@ -146,7 +147,7 @@ public:
     void Motion();
     void Draw();
     void Reset();
-    int CollisionCheck(SDL_Rect *_Bird);//-1 no Coll;0 Coll
+    int CollisionCheck(const SDL_Rect& _Bird);//-1 no Coll;0 Coll
 
 };
 class Score:public Object

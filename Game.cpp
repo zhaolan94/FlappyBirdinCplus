@@ -191,7 +191,7 @@ void Game::ObjectInit()
     objTextTips->SetRect(10,SCREEN_HEIGHT *0.4,SCREEN_WIDTH-10,SCREEN_HEIGHT /4);
     objGround = new Ground(screenRen,".//Res//ground.png");
     objGround->SetRect(0,SCREEN_HEIGHT- SCREEN_HEIGHT /4,2* SCREEN_WIDTH,SCREEN_HEIGHT /4);
-    mgnPipeSet = new PipeSetManager(screenRen,SCREEN_WIDTH/9,SCREEN_HEIGHT- SCREEN_HEIGHT /4,100);
+    mgnPipeSet = new PipeSetManager(screenRen,SCREEN_WIDTH/9,SCREEN_HEIGHT- SCREEN_HEIGHT /4,110);
     objBird = new Bird(screenRen,".//Res//bird.png");
     objBird->SetRect(SCREEN_WIDTH/3,SCREEN_HEIGHT/3,SCREEN_WIDTH/12,25);
 
@@ -210,7 +210,7 @@ void Game::Collision()
     {
         if( mgnPipeSet->CollisionCheck(objBird->GetRect()) == 0)
         {
-            SetGameStatus(Over);
+        SetGameStatus(Over);
 
         }
 

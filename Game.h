@@ -4,8 +4,6 @@
 #include <SDL_image.h>
 #include <iostream>
 #include <string>
-#include "Drawer.h"
-#include "EventHandler.h"
 #include "Object.h"
 #include "type.h"
 class Game

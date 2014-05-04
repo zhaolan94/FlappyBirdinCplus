@@ -113,7 +113,7 @@ PipeSet::PipeSet(SDL_Renderer *_Render,int width,int height,int gap)
         upPipeTexture = upPipe->GetTexture();
         downPipeTexture = downPipe->GetTexture();
         upPipe->SetRect(SCREEN_WIDTH,0,width,height*(0.1*(SDL_GetTicks()%10)+1)/4);
-        upRect = upPipe->GetRect();
+        upRect =& upPipe->GetRect();
         downPipe->SetRect(SCREEN_WIDTH,upRect->h+gap,width,height-(upRect->h+gap));
     }
     else
@@ -121,17 +121,18 @@ PipeSet::PipeSet(SDL_Renderer *_Render,int width,int height,int gap)
         upPipe = new Pipe(_Render,upPipeTexture);
         downPipe = new Pipe(_Render,downPipeTexture);
         upPipe->SetRect(SCREEN_WIDTH,0,width,height*(0.1*(SDL_GetTicks()%10)+1)/4);
-        upRect = upPipe->GetRect();
+        upRect = &upPipe->GetRect();
         downPipe->SetRect(SCREEN_WIDTH,upRect->h+gap,width,height-(upRect->h+gap));
     }
 
 
 }
-int PipeSet::CollisionCheck(SDL_Rect *_Bird)
+int PipeSet::CollisionCheck(const SDL_Rect& __Bird)
 {
-    SDL_Rect *upRect,*downRect;
-    upRect =upPipe->GetRect();
-    downRect =downPipe->GetRect();
+    SDL_Rect *upRect,*downRect,*_Bird;
+    _Bird = &__Bird;
+    upRect =&upPipe->GetRect();
+    downRect =&downPipe->GetRect();
     if(upRect->x == _Bird->x )iScore++;//SCore up.
     if(_Bird->y >= upRect->y && (_Bird->y <= upRect->y+upRect->h) || _Bird->y+_Bird->h >= upRect->y && (_Bird->y+_Bird->h <= upRect->y+upRect->h))
     {
@@ -187,7 +188,7 @@ void PipeSetManager::Motion()
             if(iterPipe->GetX() < (-width))
             {
                 listPipe.pop_front();
-                continue;
+                break;
             }
             if( SCREEN_WIDTH-(iterPipe->GetX()) ==3*width)
             {
@@ -202,7 +203,7 @@ void PipeSetManager::Motion()
     }
 }
 
-int PipeSetManager::CollisionCheck(SDL_Rect *_Bird)
+int PipeSetManager::CollisionCheck(const SDL_Rect& _Bird)
 {
     if(!listPipe.empty())
     {
@@ -269,7 +270,7 @@ void Score::Draw(const int _Score)
         for(int i = 1; i<=numbit; i++)
         {
             int bit;
-            bit = (tmpnum % (int)pow(10,i))/(int) pow(10,i-1);
+            bit = ((tmpnum % (int)pow(10,i))-(tmpnum % (int)pow(10,i-1)))/(int)pow(10,i-1);
             SDL_RenderCopy(objRen,objTexture,numDstRect[bit],objRect);
             objRect->x = (objRect->x) - (objRect->w);
         }

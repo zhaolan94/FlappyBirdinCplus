@@ -1,4 +1,0 @@
-#ifndef DRAWER_H_INCLUDED
-#define DRAWER_H_INCLUDED
-
-#endif // DRAWER_H_INCLUDED
