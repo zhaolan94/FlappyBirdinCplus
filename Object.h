@@ -25,6 +25,7 @@ public:
     Object(SDL_Renderer *_Render,std::string file);
     ~Object()
     {
+        if(GameStatus == Quit) SDL_DestroyTexture(objTexture);
         delete objRect;
     };
     void SetRect(int x,int y,int w,int h)
@@ -111,11 +112,13 @@ public:
     PipeSet();
     ~PipeSet()
     {
+
         delete upPipe;
         delete downPipe;
     };
     PipeSet(SDL_Renderer *_Render,int width,int height,int gap);
     int CollisionCheck(const SDL_Rect& __Bird);//-1 no Coll;0 Coll
+    void ResetTexturePointer(){upPipeTexture=nullptr;downPipeTexture=nullptr;};
     int GetX()
     {
 
@@ -144,6 +147,7 @@ private:
     list<PipeSet>::iterator iterPipe;
 public:
     PipeSetManager(SDL_Renderer *_Render,int _width,int _height,int _gap);
+    ~PipeSetManager(){listPipe.begin()->ResetTexturePointer();};
     void Motion();
     void Draw();
     void Reset();

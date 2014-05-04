@@ -163,6 +163,7 @@ PipeSetManager::PipeSetManager(SDL_Renderer *_Render,int _width,int _height,int 
 {
     width = _width,height= _height,gap=_gap;
     screenRen= _Render;
+    listPipe.clear();
     tmpPipe = new PipeSet(screenRen,width,height,gap);
     listPipe.push_back(*tmpPipe);
 

@@ -45,8 +45,8 @@ void Game::run()
         Motion();
         Drawer();
         Collision();
-
     }
+
 }
 
 void Game::SetGameStatus(eGameStatus _GameStatus)
@@ -164,22 +164,12 @@ void Game::ObjectDrawer()
         objTextOver->Draw();
         objTextTips->Draw();
         break;
+        case Quit:break;
+        default:break;
     }
 
 }
-SDL_Texture* Game::LoadImage(std::string file)
-{
-    SDL_Texture* tex = nullptr;
-    tex = IMG_LoadTexture(screenRen, file.c_str());
-    if (tex == nullptr)
-    {
-        cout<<"Failed to load image: " << IMG_GetError();
-        GameStatus = Quit;
-        return NULL;
-    }
 
-    return tex;
-}
 void Game::ObjectInit()
 {
     objBackground = new BackGround(screenRen,".//Res//bg.png");
@@ -194,7 +184,6 @@ void Game::ObjectInit()
     mgnPipeSet = new PipeSetManager(screenRen,SCREEN_WIDTH/9,SCREEN_HEIGHT- SCREEN_HEIGHT /4,110);
     objBird = new Bird(screenRen,".//Res//bird.png");
     objBird->SetRect(SCREEN_WIDTH/3,SCREEN_HEIGHT/3,SCREEN_WIDTH/12,25);
-
     objScore = new Score(screenRen,".//Res//number.png");
 
 }
@@ -216,4 +205,17 @@ void Game::Collision()
 
     }
 
+}
+Game::~Game()
+{
+    delete objBackground;
+    delete objTextReady;
+    delete objTextOver;
+    delete objTextTips;
+    delete objGround;
+    delete mgnPipeSet;
+    delete objBird;
+    delete objScore;
+    SDL_DestroyRenderer(screenRen);
+    SDL_DestroyWindow(window);
 }

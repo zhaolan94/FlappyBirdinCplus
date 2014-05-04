@@ -13,12 +13,8 @@ private:
     eGameStatus GameStatus = preStart;
 
     SDL_Window* window = NULL; //SDL窗口指针
-    SDL_Surface* screenSurface = NULL;//SDL表面指针
     SDL_Renderer* screenRen = NULL;//SDL渲染器
-    SDL_TimerID mainTimer;//SDL计时器
     SDL_Event Event;//SDL事件结构
-    SDL_Texture *background = nullptr;
-
     BackGround *objBackground = nullptr;
     Object *objTextReady = nullptr;
     Object *objTextOver = nullptr;
@@ -48,19 +44,14 @@ private:
     void ObjectDrawer();
     //End Drawer
     void Collision();
-    //SomeUnitily
-    SDL_Texture* LoadImage(std::string file);
     //End Methon
 public:
     //Data Field
-
-
-
-
     //End
 
     //Methon
     Game();//init Game
+    ~Game();
     void run();
 
     //End
